@@ -9,6 +9,9 @@ import org.ahmetsezer.stockwise.entity.Product;
 import org.ahmetsezer.stockwise.repository.CategoryRepository;
 import org.ahmetsezer.stockwise.repository.ProductRepository;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,11 +24,15 @@ public class ProductService {
     private final CategoryRepository categoryRepository;
     private final ModelMapper modelMapper;
 
-    public List<ProductResponse> getAllProducts() {
-        List<Product> products = productRepository.findAll();
-        return products.stream()
-                .map(product -> modelMapper.map(product, ProductResponse.class))
-                .toList();
+    public Page<ProductResponse> getAllProducts(int page, int size) {
+
+        Pageable pageable = PageRequest.of(page, size);
+
+        Page<Product> productPage = productRepository.findAll(pageable);
+
+        return productPage.map(product ->
+                modelMapper.map(product, ProductResponse.class)
+        );
     }
 
     public ProductResponse saveProduct(ProductRequest request) {

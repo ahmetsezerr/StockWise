@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.ahmetsezer.stockwise.dto.ProductRequest;
 import org.ahmetsezer.stockwise.dto.ProductResponse;
 import org.ahmetsezer.stockwise.service.ProductService;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,9 +19,11 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping
-    public ResponseEntity<List<ProductResponse>> getAllProducts() {
+    public ResponseEntity<Page<ProductResponse>> getAllProducts(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
 
-        return ResponseEntity.ok(productService.getAllProducts());
+        return ResponseEntity.ok(productService.getAllProducts(page, size));
     }
 
     @PostMapping
