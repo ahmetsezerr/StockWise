@@ -19,14 +19,20 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Supplier extends BaseEntity{
-    private String companyName;
-    private String contactName;
-    private String phoneNumber;
+
+    private String name;
+    private String phone;
 
     @Column(unique = true)
     private String email;
 
+    private boolean active = true;
 
     @OneToMany(mappedBy = "supplier")
-    private List<Product> products;
+    private List<Purchase> purchases;
+
+
+
+
+
 }

@@ -24,21 +24,17 @@ public class Product extends BaseEntity {
     @Column(unique = true)
     private String sku;
 
-
-
-    @OneToMany(mappedBy = "product")
-    private List<SaleItem> saleItems;
+    private boolean active = true;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
 
-
     @OneToMany(mappedBy = "product")
-    private List<StockMovement> stockMovements;
+    private List<Purchase> purchases;
 
-    @ManyToOne
-    @JoinColumn(name = "supplier_id")
-    private Supplier supplier;
+
+
+
 
 }

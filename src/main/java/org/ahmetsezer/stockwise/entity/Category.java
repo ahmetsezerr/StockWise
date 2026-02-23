@@ -18,11 +18,10 @@ import java.util.List;
 
 public class Category extends BaseEntity {
 
-
     private String name;
     private  String description;
+    private boolean active = true;
 
-    @OneToMany(mappedBy = "category")
+    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
     private List<Product> products;
-
 }
