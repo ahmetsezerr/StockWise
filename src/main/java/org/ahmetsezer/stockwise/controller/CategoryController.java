@@ -1,17 +1,14 @@
 package org.ahmetsezer.stockwise.controller;
 
-
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.ahmetsezer.stockwise.dto.CategoryRequest;
-import org.ahmetsezer.stockwise.dto.CategoryResponse;
-import org.ahmetsezer.stockwise.dto.ProductRequest;
-import org.ahmetsezer.stockwise.dto.ProductResponse;
+import org.ahmetsezer.stockwise.dto.request.CategoryRequest;
+import org.ahmetsezer.stockwise.dto.response.CategoryResponse;
 import org.ahmetsezer.stockwise.service.CategoryService;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -20,41 +17,44 @@ public class CategoryController {
 
     private final CategoryService categoryService;
 
-
     @GetMapping
-    public ResponseEntity<List<CategoryResponse>> getAllCategories(){
+    public ResponseEntity<Page<CategoryResponse>> getAllCategories(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size) {
 
-        return ResponseEntity.ok(categoryService.getAllCategories());
+        return ResponseEntity.ok(
+                categoryService.getAllCategories(page, size)
+        );
     }
-
 
     @PostMapping
-    public ResponseEntity<CategoryResponse> saveCategory(@RequestBody CategoryRequest request){
+    public ResponseEntity<CategoryResponse> createCategory(
+            @Valid @RequestBody CategoryRequest request) {
 
-        CategoryResponse savedResponse = categoryService.saveCategory(request);
+        CategoryResponse response = categoryService.createCategory(request);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedResponse);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(response);
     }
-
 
     @PutMapping("/{id}")
-    public ResponseEntity<CategoryResponse> editCategory(@PathVariable Long id,@RequestBody CategoryRequest request){
+    public ResponseEntity<CategoryResponse> updateCategory(
+            @PathVariable Long id,
+            @Valid @RequestBody CategoryRequest request) {
 
-        CategoryResponse editedResponse = categoryService.editCategory(id,request);
+        CategoryResponse response =
+                categoryService.updateCategory(id, request);
 
-        return ResponseEntity.ok(editedResponse);
+        return ResponseEntity.ok(response);
     }
 
-@DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteCategory (@PathVariable Long id){
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteCategory(
+            @PathVariable Long id) {
 
-       categoryService.deleteCategory(id);
+        categoryService.deleteCategory(id);
 
-        return ResponseEntity.ok(id + " ID'li ürün başarıyla sistemden silindi.");
+        return ResponseEntity.noContent().build();
     }
-
-
-
-
-    }
-
+}
