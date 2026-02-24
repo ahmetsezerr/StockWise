@@ -25,7 +25,6 @@ public class SupplierServiceImpl implements SupplierService {
     private final SupplierRepository supplierRepository;
     private final ModelMapper modelMapper;
 
-
     public Page<SupplierResponse> getAllSuppliers(int page, int size) {
 
         Pageable pageable = PageRequest.of(page, size);
@@ -46,12 +45,14 @@ public class SupplierServiceImpl implements SupplierService {
     public SupplierResponse createSupplier(SupplierRequest supplierRequest) {
 
         if (supplierRepository.existsByEmail(supplierRequest.getEmail())) {
-            throw new EmailAlreadyExistsException("Bu email adresi (" + supplierRequest.getEmail() + ") zaten kullanımda!");
+            throw new EmailAlreadyExistsException(
+                    "This email address (" + supplierRequest.getEmail() + ") is already in use!"
+            );
         }
 
         Supplier supplier = modelMapper.map(supplierRequest, Supplier.class);
 
-        //  Default business rule
+        // Default business rule
         supplier.setActive(true);
 
         Supplier savedSupplier = supplierRepository.save(supplier);
@@ -59,24 +60,22 @@ public class SupplierServiceImpl implements SupplierService {
         return modelMapper.map(savedSupplier, SupplierResponse.class);
     }
 
-
     public void deleteSupplierById(Long id) {
 
         Supplier supplier = supplierRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Supplier not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Supplier not found!"));
 
         supplier.setActive(false);
 
         supplierRepository.save(supplier);
-
     }
 
     public SupplierResponse updateSupplier(Long id, SupplierRequest request) {
 
-
         Supplier supplier = supplierRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Güncellenmek istenen tedarikçi bulunamadı!"));
-
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Supplier to be updated was not found!"
+                ));
 
         Optional<Supplier> existingSupplier =
                 supplierRepository.findByEmail(request.getEmail());
@@ -84,8 +83,9 @@ public class SupplierServiceImpl implements SupplierService {
         if (existingSupplier.isPresent()
                 && !existingSupplier.get().getId().equals(id)) {
 
-            throw new EmailAlreadyExistsException("Bu email başka bir tedarikçi tarafından kullanılıyor!");
-
+            throw new EmailAlreadyExistsException(
+                    "This email is already used by another supplier!"
+            );
         }
 
         supplier.setName(request.getName());
@@ -96,8 +96,4 @@ public class SupplierServiceImpl implements SupplierService {
 
         return modelMapper.map(updatedSupplier, SupplierResponse.class);
     }
-
-
 }
-
-
