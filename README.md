@@ -1,50 +1,144 @@
-# Case Study - StockWise API (Inventory Management)
+# 📦 StockWise – Inventory Management System
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Java-17%2B-orange?style=for-the-badge&logo=openjdk" alt="Java">
-  <img src="https://img.shields.io/badge/Spring%20Boot-3.x-brightgreen?style=for-the-badge&logo=springboot" alt="Spring Boot">
-  <img src="https://img.shields.io/badge/Spring%20Security-JWT-blue?style=for-the-badge&logo=springsecurity" alt="Security">
-  <img src="https://img.shields.io/badge/Database-PostgreSQL-blue?style=for-the-badge&logo=postgresql" alt="PostgreSQL">
-</p>
+> 🔐 Secure Inventory API with JWT Authentication & Role-Based Authorization  
+> 🐳 Dockerized | 📄 Swagger Documented | ⚙️ Clean Architecture  
 
 ---
 
 ## 📘 Information
 
-### Project Definition (StockWise API)
-Bu proje; kurumsal ölçekte stok takibi, tedarikçi yönetimi ve satın alma süreçlerini dijitalleştirmek için tasarlanmış, Spring Boot tabanlı bir **Inventory Management System** çözümüdür. Sistem, JWT tabanlı stateless güvenlik mimarisi üzerine inşa edilmiş olup, rol tabanlı yetkilendirme (RBAC) ile korunmaktadır.
+### 📌 Project Definition (StockWise API)
 
-### End-to-end flow (Create Purchase):
-* **Client sends:** `POST /api/purchases` endpoint'ine `PurchaseRequest` (productId, supplierId, miktar, birim fiyat) ile başvurur.
-* **Service Logic:** Tedarikçinin aktifliği kontrol edilir, ürünün stok miktarı güncellenir ve satın alma kaydı veritabanına işlenir.
-* **Persistence:** İşlem başarılı olduğunda `Purchase` entity'si kalıcı hale getirilir ve stok seviyesi anlık olarak güncellenir.
+StockWise API is a backend-focused inventory management system designed to manage products, categories, suppliers, and stock operations in a secure and scalable way.
 
-## 🚀 Explore Rest APIs
+The system provides RESTful endpoints for handling inventory workflows such as product lifecycle management, supplier relationships, and purchase-based stock updates. It simulates real-world business scenarios by enforcing rules like category validation, supplier activity control, and stock consistency.
 
-### Endpoints Summary
+Built with a layered architecture, the project uses DTO-based data transfer to ensure clean separation of concerns. Security is implemented using JWT-based authentication and role-based authorization, allowing controlled access to endpoints based on user roles (`ADMIN`, `USER`).
 
-| Method | URL | Description | Request Body | Auth / Permissions |
-| :--- | :--- | :--- | :--- | :--- |
-| **POST** | `/api/auth/register` | Yeni kullanıcı kaydı | `RegisterRequest` | PermitAll |
-| **POST** | `/api/auth/authenticate` | JWT Token üretimi (Login) | `AuthRequest` | PermitAll |
-| **GET** | `/api/products` | Sayfalamalı ürün listesi | — | USER/ADMIN |
-| **POST** | `/api/products` | Yeni ürün ekleme (Admin) | `ProductRequest` | ADMIN |
-| **POST** | `/api/purchases` | Satın alma ve stok artırımı | `PurchaseRequest` | ADMIN |
-| **GET** | `/api/suppliers` | Tedarikçi listesi | — | USER/ADMIN |
+Additionally, the application includes centralized exception handling, request validation, and Swagger/OpenAPI documentation support, making it suitable for real-world backend development and portfolio demonstration.
 
-## 🛠 Technologies
+---
 
-* **Backend:** Java 17, Spring Boot 3.x, Spring Data JPA
-* **Security:** Spring Security, JWT, BCrypt
-* **Mapping:** ModelMapper (Strict Matching)
-* **Validation:** Jakarta Bean Validation
-* **Documentation:** OpenAPI 3.0 / Swagger UI
-* **Database:** PostgreSQL / MySQL
+## 🧠 System Design
 
-## 📋 Prerequisites
+- Layered Architecture (Controller → Service → Repository)
+- DTO-based communication
+- Stateless authentication (JWT)
+- Separation of concerns
+- RESTful API design
 
-### Define Variables in `.env` or `application.properties`
-```properties
-spring.datasource.url=jdbc:postgresql://localhost:5432/stockwise_db
-jwt.secret=${JWT_SECRET_KEY}
-jwt.expiration=86400000
+---
+
+## ⚙️ Core Features
+
+### 🔐 Authentication & Authorization
+- JWT-based authentication system
+- Role-based access control (`ADMIN`, `USER`)
+- Protected endpoints using `@PreAuthorize`
+- Stateless session management
+
+---
+
+### 📦 Inventory Management
+
+#### Product
+- Create / Update / Delete products (ADMIN)
+- List and search products (USER, ADMIN)
+- Category-based organization
+
+#### Category
+- Manage product categories
+- Full CRUD operations
+
+#### Supplier
+- Supplier lifecycle management
+- Active/passive supplier control
+
+---
+
+### 🛒 Purchase System
+
+- Purchase operations increase stock quantity
+- Linked with Product and Supplier
+- Simulates real-world stock flow
+
+---
+
+### 📊 Stock Control
+
+- Minimum stock level support
+- Business rule validations
+
+---
+
+## 🔍 API Overview
+
+### 🔑 Authentication
+
+| Method | Endpoint | Description |
+|--------|----------|------------|
+| POST | `/api/auth/register` | Register new user |
+| POST | `/api/auth/authenticate` | Login and receive JWT |
+
+---
+
+### 📦 Products
+
+| Method | Endpoint | Access |
+|--------|----------|--------|
+| GET | `/api/products` | USER, ADMIN |
+| POST | `/api/products` | ADMIN |
+| PUT | `/api/products/{id}` | ADMIN |
+| DELETE | `/api/products/{id}` | ADMIN |
+
+---
+
+### 📁 Categories & Suppliers
+
+- Full CRUD operations  
+- Write operations restricted to ADMIN  
+
+---
+
+### 🛒 Purchases
+
+| Method | Endpoint | Description |
+|--------|----------|------------|
+| POST | `/api/purchases` | Increase stock |
+| GET | `/api/purchases` | List purchases |
+
+---
+
+## 🛠️ Technologies
+
+### Backend
+- Java 17  
+- Spring Boot  
+- Spring Security  
+- Spring Data JPA (Hibernate)  
+
+### Database
+- PostgreSQL  
+
+### Tools & Libraries
+- JWT (JJWT)  
+- Docker & Docker Compose  
+- Swagger / OpenAPI  
+- Maven  
+- Postman  
+- Git  
+
+---
+
+## 📂 Project Structure
+
+```bash
+src/main/java/org/ahmetsezer/stockwise
+├── config          # Configuration classes
+├── controller      # REST Controllers
+├── dto             # Request / Response DTOs
+├── entity          # JPA Entities
+├── exception       # Custom exceptions & handlers
+├── repository      # Data access layer
+├── security        # JWT & Security configuration
+├── service         # Business logic layer
