@@ -21,18 +21,18 @@ Additionally, the application includes centralized exception handling, request v
 
 ## 🚀 Features
 
-- 🔐 JWT-based Authentication & Authorization  
-- 👥 Role-based access control (`ADMIN`, `USER`)  
-- 📦 Product, Category, Supplier management  
-- 🛒 Purchase system for stock increase operations  
-- 📊 Minimum stock level tracking  
-- 🔍 Pagination and search functionality  
-- ⚠️ Centralized global exception handling  
-- ✅ Request validation with Bean Validation  
-- 📄 Swagger / OpenAPI documentation  
-- 🐳 Dockerized application with Docker Compose  
-- 🧱 Layered architecture (Controller, Service, Repository)  
-- 🔄 DTO-based data transfer structure  
+-  JWT-based Authentication & Authorization  
+-  Role-based access control (`ADMIN`, `USER`)  
+-  Product, Category, Supplier management  
+-  Purchase system for stock increase operations  
+-  Minimum stock level tracking  
+-  Pagination and search functionality  
+-  Centralized global exception handling  
+-  Request validation with Bean Validation  
+-  Swagger / OpenAPI documentation  
+-  Dockerized application with Docker Compose  
+-  Layered architecture (Controller, Service, Repository)  
+-  DTO-based data transfer structure  
 
 
 
