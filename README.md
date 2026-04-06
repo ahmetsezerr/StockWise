@@ -1,121 +1,122 @@
-# 📦 StockWise – Inventory Management System
+# StockWise – Inventory Management System
 
-> 🔐 Secure Inventory API with JWT Authentication & Role-Based Authorization  
-> 🐳 Dockerized | 📄 Swagger Documented | ⚙️ Clean Architecture  
+> Secure Inventory API with JWT Authentication and Role-Based Authorization  
+> Dockerized | Swagger Documented | Clean Architecture
 
 ---
 
-## 📘 Information
+## Table of Contents
 
-### 📌 Project Definition (StockWise API)
+- [Overview](#overview)
+- [Features](#features)
+- [Architecture](#architecture)
+- [Tech Stack](#tech-stack)
+- [Project Structure](#project-structure)
+- [API Overview](#api-overview)
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [How to Run](#how-to-run)
+- [API Documentation](#api-documentation)
+- [Validation and Exception Handling](#validation-and-exception-handling)
+- [Business Logic Highlights](#business-logic-highlights)
+- [Future Improvements](#future-improvements)
+- [License](#license)
+
+---
+
+## Overview
 
 StockWise API is a backend-focused inventory management system designed to manage products, categories, suppliers, and stock operations in a secure and scalable way.
 
-The system provides RESTful endpoints for handling inventory workflows such as product lifecycle management, supplier relationships, and purchase-based stock updates. It simulates real-world business scenarios by enforcing rules like category validation, supplier activity control, and stock consistency.
-
-Built with a layered architecture, the project uses DTO-based data transfer to ensure clean separation of concerns. Security is implemented using JWT-based authentication and role-based authorization, allowing controlled access to endpoints based on user roles (`ADMIN`, `USER`).
-
-Additionally, the application includes centralized exception handling, request validation, and Swagger/OpenAPI documentation support, making it suitable for real-world backend development and portfolio demonstration.
-
----
-## 🚀 Features
-
-- **🔐 JWT-Based Authentication & Authorization**  
-  Provides a secure login system using JSON Web Tokens (JWT). Access to API endpoints is restricted based on user roles, ensuring that only authorized users can perform sensitive operations.
-
-- **👥 Role-Based Access Control**  
-  The system supports different user roles such as `ADMIN` and `USER`. Administrative operations like creating, updating, and deleting core resources are protected, while standard users can access permitted read operations.
-
-- **📦 Product Management**  
-  Enables full product lifecycle management including creating, updating, deleting, listing, and searching products. Each product is associated with business-related attributes such as price, stock quantity, and minimum stock level.
-
-- **📁 Category Management**  
-  Products can be organized under categories to provide a cleaner and more manageable inventory structure. The API supports category creation, update, deletion, and listing operations.
-
-- **🚚 Supplier Management**  
-  The system allows management of supplier records used in purchase and stock operations. Supplier activity status can be controlled to ensure that only valid suppliers are used in business processes.
-
-- **🛒 Purchase Management**  
-  Supports purchase transactions that increase product stock quantities. Each purchase operation is linked with both product and supplier data, simulating real-world inventory flow.
-
-- **📊 Stock Tracking & Minimum Stock Control**  
-  Tracks available stock quantities for products and supports minimum stock level definitions. This helps represent inventory control logic and provides a basis for low-stock monitoring.
-
-- **🔍 Pagination & Search Support**  
-  Listing endpoints support pagination for more efficient data retrieval and better scalability. Search functionality is also included to make resource filtering easier.
-
-
-
-
-
-
-
-
-
-## 🧠 System Design
-
-- Layered Architecture (Controller → Service → Repository)
-- DTO-based communication
-- Stateless authentication (JWT)
-- Separation of concerns
-- RESTful API design
+The system provides RESTful endpoints for handling inventory workflows such as product lifecycle management, supplier relationships, and purchase-based stock updates.
 
 ---
 
-## ⚙️ Core Features
+## Features
 
-### 🔐 Authentication & Authorization
-- JWT-based authentication system
-- Role-based access control (`ADMIN`, `USER`)
-- Protected endpoints using `@PreAuthorize`
-- Stateless session management
+### JWT-Based Authentication and Authorization
+Secure login system using JWT tokens.
 
----
+### Role-Based Access Control
+Supports `ADMIN` and `USER` roles.
 
-### 📦 Inventory Management
+### Product, Category, Supplier Management
+Full CRUD operations with business rules.
 
-#### Product
-- Create / Update / Delete products (ADMIN)
-- List and search products (USER, ADMIN)
-- Category-based organization
+### Purchase Management
+Stock increase logic with supplier linkage.
 
-#### Category
-- Manage product categories
-- Full CRUD operations
+### Stock Tracking
+Minimum stock level support.
 
-#### Supplier
-- Supplier lifecycle management
-- Active/passive supplier control
+### Pagination and Search
+Efficient data retrieval.
 
----
+### Swagger Documentation
+Interactive API testing.
 
-### 🛒 Purchase System
-
-- Purchase operations increase stock quantity
-- Linked with Product and Supplier
-- Simulates real-world stock flow
+### Docker Support
+Containerized execution.
 
 ---
 
-### 📊 Stock Control
+## Architecture
 
-- Minimum stock level support
-- Business rule validations
+- Controller Layer
+- Service Layer
+- Repository Layer
+- DTO Layer
+- Security Layer
 
 ---
 
-## 🔍 API Overview
+## Tech Stack
 
-### 🔑 Authentication
+### Backend
+- Java 17
+- Spring Boot
+- Spring Security
+- Spring Data JPA
+
+### Database
+- PostgreSQL
+
+### Tools
+- Docker
+- Swagger
+- Maven
+- Postman
+
+---
+
+## Project Structure
+
+```bash
+src/main/java/org/ahmetsezer/stockwise
+├── config
+├── controller
+├── dto
+├── entity
+├── exception
+├── repository
+├── security
+├── service
+```
+
+---
+
+## API Overview
+
+### Authentication
 
 | Method | Endpoint | Description |
-|--------|----------|------------|
-| POST | `/api/auth/register` | Register new user |
-| POST | `/api/auth/authenticate` | Login and receive JWT |
+|--------|----------|-------------|
+| POST | `/api/auth/register` | Register user |
+| POST | `/api/auth/authenticate` | Login |
 
 ---
 
-### 📦 Products
+### Products
 
 | Method | Endpoint | Access |
 |--------|----------|--------|
@@ -126,52 +127,135 @@ Additionally, the application includes centralized exception handling, request v
 
 ---
 
-### 📁 Categories & Suppliers
+### Categories
 
-- Full CRUD operations  
-- Write operations restricted to ADMIN  
-
----
-
-### 🛒 Purchases
-
-| Method | Endpoint | Description |
-|--------|----------|------------|
-| POST | `/api/purchases` | Increase stock |
-| GET | `/api/purchases` | List purchases |
+| Method | Endpoint | Access |
+|--------|----------|--------|
+| GET | `/api/categories` | USER, ADMIN |
+| POST | `/api/categories` | ADMIN |
+| PUT | `/api/categories/{id}` | ADMIN |
+| DELETE | `/api/categories/{id}` | ADMIN |
 
 ---
 
-## 🛠️ Technologies
+### Suppliers
 
-### Backend
-- Java 17  
-- Spring Boot  
-- Spring Security  
-- Spring Data JPA (Hibernate)  
-
-### Database
-- PostgreSQL  
-
-### Tools & Libraries
-- JWT (JJWT)  
-- Docker & Docker Compose  
-- Swagger / OpenAPI  
-- Maven  
-- Postman  
-- Git  
+| Method | Endpoint | Access |
+|--------|----------|--------|
+| GET | `/api/suppliers` | USER, ADMIN |
+| POST | `/api/suppliers` | ADMIN |
+| PUT | `/api/suppliers/{id}` | ADMIN |
+| DELETE | `/api/suppliers/{id}` | ADMIN |
 
 ---
 
-## 📂 Project Structure
+### Purchases
+
+| Method | Endpoint | Access |
+|--------|----------|--------|
+| GET | `/api/purchases` | USER, ADMIN |
+| POST | `/api/purchases` | ADMIN |
+
+---
+
+## Installation
+
+### Prerequisites
+
+- Java 17
+- Maven
+- PostgreSQL
+- Docker (optional)
+
+---
+
+### Clone Repository
 
 ```bash
-src/main/java/org/ahmetsezer/stockwise
-├── config          # Configuration classes
-├── controller      # REST Controllers
-├── dto             # Request / Response DTOs
-├── entity          # JPA Entities
-├── exception       # Custom exceptions & handlers
-├── repository      # Data access layer
-├── security        # JWT & Security configuration
-├── service         # Business logic layer
+git clone https://github.com/your-username/StockWise.git
+cd StockWise
+```
+
+---
+
+### Build Project
+
+```bash
+./mvnw clean install
+```
+
+---
+
+## Configuration
+
+```properties
+spring.datasource.url=jdbc:postgresql://localhost:5432/stockwise
+spring.datasource.username=your_username
+spring.datasource.password=your_password
+
+spring.jpa.hibernate.ddl-auto=update
+
+jwt.secret=your_secret_key
+jwt.expiration=86400000
+```
+
+---
+
+## How to Run
+
+### Run Locally
+
+```bash
+./mvnw spring-boot:run
+```
+
+---
+
+### Run with Docker
+
+```bash
+docker-compose up --build
+```
+
+---
+
+## API Documentation
+
+```
+http://localhost:8080/swagger-ui/index.html
+```
+
+---
+
+## Validation and Exception Handling
+
+- Bean Validation (`@NotBlank`, `@Positive`, etc.)
+- Global Exception Handler
+- Custom exceptions:
+  - ResourceNotFoundException
+  - BusinessException
+  - EmailAlreadyExistsException
+
+---
+
+## Business Logic Highlights
+
+- Product requires valid category
+- Supplier must be active
+- Purchase increases stock
+- Role-based access enforced
+
+---
+
+## Future Improvements
+
+- Refresh token support
+- Unit & integration tests
+- CI/CD pipeline
+- Redis caching
+
+---
+
+## License
+
+This project is developed for educational and portfolio purposes.
