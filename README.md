@@ -227,25 +227,6 @@ http://localhost:8080/swagger-ui/index.html
 
 ---
 
-## Validation and Exception Handling
-
-- Bean Validation (`@NotBlank`, `@Positive`, etc.)
-- Global Exception Handler
-- Custom exceptions:
-  - ResourceNotFoundException
-  - BusinessException
-  - EmailAlreadyExistsException
-
----
-
-## Business Logic Highlights
-
-- Product requires valid category
-- Supplier must be active
-- Purchase increases stock
-- Role-based access enforced
-
----
 
 ## Future Improvements
 
