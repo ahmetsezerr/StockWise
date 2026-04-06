@@ -1,1 +1,50 @@
-Case Study - StockWise API📝 InformationProject Definition (StockWise API)Bu proje; modern işletmelerin envanter akışlarını, tedarikçi ilişkilerini ve satın alma operasyonlarını yönetmek için geliştirilmiş, Spring Boot tabanlı bir mikroservis çözümüdür. Sistem, role-tabanlı (RBAC) güvenlik mimarisiyle korunmakta olup tüm API yanıtları standartlaştırılmış bir sarmalayıcı (wrapper) içinde sunulmaktadır.End-to-end flow (Purchase Process):Client sends: POST /api/purchases ile satın alma isteği gönderir (productId, supplierId, quantity, unitPrice).Service logic: İlgili tedarikçinin aktifliğini kontrol eder, ürünün stok miktarını transactional olarak artırır ve işlemi persist eder.Returns: 201 Created kodu ile kaydedilen satın alma kaydını (PurchaseResponse) döner.Key Features:Product Search: Büyük/küçük harf duyarsız, aktif ürünler içinde filtreleme desteği.Dynamic Stock Alerts: Ürünlerin minStockLevel değerine göre lowStock veya outOfStock durumlarının dinamik hesaplanması.Soft Delete: Veri bütünlüğü için kategoriler ve ürünler üzerinde pasifize etme (active=false) mekanizması.🚀 Explore Rest APIsEndpoints SummaryMethodURLDescriptionRequest BodyAuth / PermissionsPOST/api/auth/registerYeni kullanıcı kaydı oluşturur.RegisterRequestPermitAllPOST/api/auth/authenticateLogin olur ve JWT token döner.AuthRequestPermitAllGET/api/productsSayfalamalı ürün listesi döner.—ROLE_USER, ROLE_ADMINPOST/api/productsYeni ürün ekler (Admin).ProductRequestROLE_ADMINPOST/api/purchasesStok artırımı ve satın alma işlemi.PurchaseRequestROLE_ADMINGET/api/categoriesAktif kategorileri listeler.—ROLE_USER, ROLE_ADMIN🛠 TechnologiesCore: Java 17, Spring Boot 3.xSecurity: Spring Security, JWT (io.jsonwebtoken)Persistence: Spring Data JPA, Hibernate, PostgreSQL/MySQLMapping: ModelMapper (Strict Strategy)Documentation: OpenAPI 3.0 (Swagger UI)Testing: JUnit 5, MockitoContainerization: Docker, Docker ComposeMonitoring (Optional): Prometheus, GrafanaQuality: JaCoCo (Test Coverage Report)📋 Prerequisites & Setup
+# Case Study - StockWise API (Inventory Management)
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Java-17%2B-orange?style=for-the-badge&logo=openjdk" alt="Java">
+  <img src="https://img.shields.io/badge/Spring%20Boot-3.x-brightgreen?style=for-the-badge&logo=springboot" alt="Spring Boot">
+  <img src="https://img.shields.io/badge/Spring%20Security-JWT-blue?style=for-the-badge&logo=springsecurity" alt="Security">
+  <img src="https://img.shields.io/badge/Database-PostgreSQL-blue?style=for-the-badge&logo=postgresql" alt="PostgreSQL">
+</p>
+
+---
+
+## 📘 Information
+
+### Project Definition (StockWise API)
+Bu proje; kurumsal ölçekte stok takibi, tedarikçi yönetimi ve satın alma süreçlerini dijitalleştirmek için tasarlanmış, Spring Boot tabanlı bir **Inventory Management System** çözümüdür. Sistem, JWT tabanlı stateless güvenlik mimarisi üzerine inşa edilmiş olup, rol tabanlı yetkilendirme (RBAC) ile korunmaktadır.
+
+### End-to-end flow (Create Purchase):
+* **Client sends:** `POST /api/purchases` endpoint'ine `PurchaseRequest` (productId, supplierId, miktar, birim fiyat) ile başvurur.
+* **Service Logic:** Tedarikçinin aktifliği kontrol edilir, ürünün stok miktarı güncellenir ve satın alma kaydı veritabanına işlenir.
+* **Persistence:** İşlem başarılı olduğunda `Purchase` entity'si kalıcı hale getirilir ve stok seviyesi anlık olarak güncellenir.
+
+## 🚀 Explore Rest APIs
+
+### Endpoints Summary
+
+| Method | URL | Description | Request Body | Auth / Permissions |
+| :--- | :--- | :--- | :--- | :--- |
+| **POST** | `/api/auth/register` | Yeni kullanıcı kaydı | `RegisterRequest` | PermitAll |
+| **POST** | `/api/auth/authenticate` | JWT Token üretimi (Login) | `AuthRequest` | PermitAll |
+| **GET** | `/api/products` | Sayfalamalı ürün listesi | — | USER/ADMIN |
+| **POST** | `/api/products` | Yeni ürün ekleme (Admin) | `ProductRequest` | ADMIN |
+| **POST** | `/api/purchases` | Satın alma ve stok artırımı | `PurchaseRequest` | ADMIN |
+| **GET** | `/api/suppliers` | Tedarikçi listesi | — | USER/ADMIN |
+
+## 🛠 Technologies
+
+* **Backend:** Java 17, Spring Boot 3.x, Spring Data JPA
+* **Security:** Spring Security, JWT, BCrypt
+* **Mapping:** ModelMapper (Strict Matching)
+* **Validation:** Jakarta Bean Validation
+* **Documentation:** OpenAPI 3.0 / Swagger UI
+* **Database:** PostgreSQL / MySQL
+
+## 📋 Prerequisites
+
+### Define Variables in `.env` or `application.properties`
+```properties
+spring.datasource.url=jdbc:postgresql://localhost:5432/stockwise_db
+jwt.secret=${JWT_SECRET_KEY}
+jwt.expiration=86400000
