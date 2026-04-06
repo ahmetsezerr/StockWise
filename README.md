@@ -18,21 +18,33 @@ Built with a layered architecture, the project uses DTO-based data transfer to e
 Additionally, the application includes centralized exception handling, request validation, and Swagger/OpenAPI documentation support, making it suitable for real-world backend development and portfolio demonstration.
 
 ---
-
 ## 🚀 Features
 
--  JWT-based Authentication & Authorization  
--  Role-based access control (`ADMIN`, `USER`)  
--  Product, Category, Supplier management  
--  Purchase system for stock increase operations  
--  Minimum stock level tracking  
--  Pagination and search functionality  
--  Centralized global exception handling  
--  Request validation with Bean Validation  
--  Swagger / OpenAPI documentation  
--  Dockerized application with Docker Compose  
--  Layered architecture (Controller, Service, Repository)  
--  DTO-based data transfer structure  
+- **🔐 JWT-Based Authentication & Authorization**  
+  Provides a secure login system using JSON Web Tokens (JWT). Access to API endpoints is restricted based on user roles, ensuring that only authorized users can perform sensitive operations.
+
+- **👥 Role-Based Access Control**  
+  The system supports different user roles such as `ADMIN` and `USER`. Administrative operations like creating, updating, and deleting core resources are protected, while standard users can access permitted read operations.
+
+- **📦 Product Management**  
+  Enables full product lifecycle management including creating, updating, deleting, listing, and searching products. Each product is associated with business-related attributes such as price, stock quantity, and minimum stock level.
+
+- **📁 Category Management**  
+  Products can be organized under categories to provide a cleaner and more manageable inventory structure. The API supports category creation, update, deletion, and listing operations.
+
+- **🚚 Supplier Management**  
+  The system allows management of supplier records used in purchase and stock operations. Supplier activity status can be controlled to ensure that only valid suppliers are used in business processes.
+
+- **🛒 Purchase Management**  
+  Supports purchase transactions that increase product stock quantities. Each purchase operation is linked with both product and supplier data, simulating real-world inventory flow.
+
+- **📊 Stock Tracking & Minimum Stock Control**  
+  Tracks available stock quantities for products and supports minimum stock level definitions. This helps represent inventory control logic and provides a basis for low-stock monitoring.
+
+- **🔍 Pagination & Search Support**  
+  Listing endpoints support pagination for more efficient data retrieval and better scalability. Search functionality is also included to make resource filtering easier.
+
+
 
 
 
